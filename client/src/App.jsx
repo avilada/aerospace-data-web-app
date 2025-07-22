@@ -1,29 +1,31 @@
 import { useEffect, useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
-  const [data, setData] = useState([]);
+  const [missions, setMissions] = useState([]);
 
   useEffect(() => {
-    fetch('/api/data')
+    fetch('/api/nasa')
       .then(res => res.json())
-      .then(setData)
+      .then(setMissions)
       .catch(console.error);
   }, []);
 
   return (
     <div className="App">
-      <h1>Aerospace Data Test</h1>
-      {data.map((item, i) => (
-        <div key={i} className="card">
-          <h2>{item.title}</h2>
-          <img src={item.url} alt={item.title} width="400" />
-          <p>{item.explanation}</p>
-          <p><i>{item.date}</i></p>
-        </div>
-      ))}
+      <h1>Aerospace Missions</h1>
+      <div className="missions-container">
+        {missions.map((mission) => (
+          <div key={mission._id} className="mission-card">
+            <h2>{mission.name}</h2>
+            <p><b>Mission:</b> {mission.mission}</p>
+            <p><b>Agency:</b> {mission.agency}</p>
+            <p><b>Launch Date:</b> {new Date(mission.launchDate).toLocaleDateString()}</p>
+            <p><b>Status:</b> {mission.status}</p>
+            {mission.description && <p className="desc">{mission.description}</p>}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
