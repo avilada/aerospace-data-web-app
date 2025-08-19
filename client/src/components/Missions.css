@@ -76,6 +76,21 @@
   margin: 0 2rem 2rem;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(45, 55, 72, 0.5);
+  animation: slideInDown 0.8s ease-out;
+  transform: translateY(-20px);
+  opacity: 0;
+  animation-fill-mode: forwards;
+}
+
+@keyframes slideInDown {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 .search-container {
@@ -90,18 +105,25 @@
   background: rgba(30, 40, 60, 0.9);
   color: #e0e6f6;
   font-size: 1rem;
-  transition: all 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: scale(1);
 }
 
 .search-input::placeholder {
   color: #a3bffa;
   opacity: 0.7;
+  transition: opacity 0.3s ease;
 }
 
 .search-input:focus {
   outline: none;
   border-color: #a3bffa;
-  box-shadow: 0 0 0 2px rgba(163, 191, 250, 0.2);
+  box-shadow: 0 0 0 3px rgba(163, 191, 250, 0.2);
+  transform: scale(1.02);
+}
+
+.search-input:focus::placeholder {
+  opacity: 0.4;
 }
 
 .filters-container {
@@ -109,18 +131,38 @@
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1rem;
   margin-bottom: 1rem;
+  animation: fadeIn 0.8s ease-out 0.2s both;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .filter-group {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  transition: transform 0.2s ease;
+}
+
+.filter-group:hover {
+  transform: translateY(-2px);
 }
 
 .filter-group label {
   color: #a3bffa;
   font-size: 0.9rem;
   font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.filter-group:hover label {
+  color: #e0e6f6;
 }
 
 .filter-select,
@@ -131,14 +173,22 @@
   background: rgba(30, 40, 60, 0.9);
   color: #e0e6f6;
   font-size: 0.9rem;
-  transition: all 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: scale(1);
+}
+
+.filter-select:hover,
+.date-input:hover {
+  transform: scale(1.02);
+  border-color: #4a5568;
 }
 
 .filter-select:focus,
 .date-input:focus {
   outline: none;
   border-color: #a3bffa;
-  box-shadow: 0 0 0 2px rgba(163, 191, 250, 0.2);
+  box-shadow: 0 0 0 3px rgba(163, 191, 250, 0.2);
+  transform: scale(1.02);
 }
 
 .filter-select option {
@@ -155,13 +205,35 @@
   font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   align-self: end;
+  transform: scale(1);
+  position: relative;
+  overflow: hidden;
+}
+
+.clear-filters-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.clear-filters-btn:hover::before {
+  left: 100%;
 }
 
 .clear-filters-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+}
+
+.clear-filters-btn:active {
+  transform: translateY(0) scale(1);
 }
 
 .results-info {
@@ -169,6 +241,16 @@
   color: #a3bffa;
   font-size: 0.9rem;
   font-weight: 500;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
 }
 
 /* Enhanced mission cards for better visual hierarchy */
@@ -181,10 +263,31 @@
   min-width: 260px;
   max-width: 340px;
   margin-bottom: 2rem;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 1;
   position: relative;
   overflow: hidden;
+  animation: fadeInUp 0.6s ease-out;
+  opacity: 0;
+  animation-fill-mode: forwards;
+}
+
+.mission-card:nth-child(1) { animation-delay: 0.1s; }
+.mission-card:nth-child(2) { animation-delay: 0.2s; }
+.mission-card:nth-child(3) { animation-delay: 0.3s; }
+.mission-card:nth-child(4) { animation-delay: 0.4s; }
+.mission-card:nth-child(5) { animation-delay: 0.5s; }
+.mission-card:nth-child(6) { animation-delay: 0.6s; }
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .mission-card::before {
@@ -196,10 +299,16 @@
   height: 3px;
   background: linear-gradient(90deg, #a3bffa, #667eea, #764ba2);
   opacity: 0.7;
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.mission-card:hover::before {
+  transform: scaleX(1);
 }
 
 .mission-card:hover {
-  transform: translateY(-6px) scale(1.03);
+  transform: translateY(-8px) scale(1.02);
   box-shadow: 0 0 32px 8px #a3bffa55, 0 0 64px 16px #1b2735;
 }
 
@@ -223,6 +332,7 @@
   border-top: 1px solid rgba(163, 191, 250, 0.2);
 }
 
+/* Status badges with animations */
 .status {
   padding: 0.2em 0.6em;
   border-radius: 0.5em;
@@ -230,6 +340,13 @@
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  transform: scale(1);
+}
+
+.status:hover {
+  transform: scale(1.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .status.completed {
@@ -265,16 +382,18 @@
   min-height: 60vh;
   position: relative;
   z-index: 1;
+  animation: fadeIn 0.5s ease-out;
 }
 
 .spinner {
-  width: 50px;
-  height: 50px;
-  border: 3px solid #2e3a4f;
-  border-top: 3px solid #a3bffa;
+  width: 60px;
+  height: 60px;
+  border: 4px solid rgba(45, 55, 72, 0.3);
+  border-top: 4px solid #a3bffa;
   border-radius: 50%;
-  animation: spin 1s linear infinite;
+  animation: spin 1s linear infinite, pulse 2s ease-in-out infinite;
   margin-bottom: 1rem;
+  box-shadow: 0 0 20px rgba(163, 191, 250, 0.3);
 }
 
 @keyframes spin {
@@ -285,6 +404,7 @@
 .loading p {
   color: #a3bffa;
   font-size: 1.2em;
+  animation: fadeInUp 0.6s ease-out 0.3s both;
 }
 
 /* Error state */
@@ -297,11 +417,37 @@
   position: relative;
   z-index: 1;
   text-align: center;
+  animation: bounceIn 0.8s ease-out;
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .error h2 {
   color: #f87171;
   margin-bottom: 1rem;
+  animation: shake 0.5s ease-in-out 0.5s both;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
 }
 
 .error p {
@@ -319,6 +465,7 @@
   position: relative;
   z-index: 1;
   text-align: center;
+  animation: bounceIn 0.8s ease-out;
 }
 
 .no-missions h2 {
@@ -340,14 +487,36 @@
   text-decoration: none;
   font-size: 1em;
   font-weight: bold;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  transform: scale(1);
+  position: relative;
+  overflow: hidden;
+}
+
+.back-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.back-button:hover::before {
+  left: 100%;
 }
 
 .back-button:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px) scale(1.05);
   box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
   color: white;
+}
+
+.back-button:active {
+  transform: translateY(-1px) scale(1.02);
 }
 
 @media (max-width: 768px) {
